@@ -1,19 +1,19 @@
 /* eslint-disable no-console */
-const { ApolloServer, gql } = require("apollo-server");
-const { readFileSync } = require("fs");
+const { ApolloServer, gql } = require('apollo-server');
+const { readFileSync } = require('fs');
 
 const port = process.env.APOLLO_PORT || 4000;
 
 const pandas = [
-  { name: "Basi", favoriteFood: "bamboo leaves" },
-  { name: "Yun", favoriteFood: "apple" },
+  { name: 'Basi', favoriteFood: 'bamboo leaves' },
+  { name: 'Yun', favoriteFood: 'apple' },
 ];
 
-const typeDefs = gql(readFileSync("./pandas.graphql", { encoding: "utf-8" }));
+const typeDefs = gql(readFileSync('./pandas.graphql', { encoding: 'utf-8' }));
 const resolvers = {
   Query: {
     allPandas: (_, args, context) => pandas,
-    panda: (_, args, context) => pandas.find((p) => p.id === args.id),
+    panda: (_, args, context) => pandas.find(p => p.id === args.id),
   },
 };
 const server = new ApolloServer({ typeDefs, resolvers });
@@ -22,6 +22,6 @@ server
   .then(({ url }) => {
     console.log(`🚀 Pandas subgraph ready at ${url}`);
   })
-  .catch((err) => {
+  .catch(err => {
     console.error(err);
   });
