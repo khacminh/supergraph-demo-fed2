@@ -5,15 +5,15 @@
 
 Federation 2 is an evolution of the original Apollo Federation with an improved shared ownership model, enhanced type merging, and cleaner syntax for a smoother developer experience. It’s backwards compatible, requiring no major changes to your subgraphs. Try the GA release today!
 
-* [Welcome](#welcome)
-* [Prerequisites](#prerequisites)
-* [Build your first graph](#build-your-first-graph-with-federation-2)
-* [Local development](#local-development-with-federation-2)
-* [Open Telemetry](#tracing-with-open-telemetry)
-* [Composition examples](examples/README.md)
-* [Apollo Router](#apollo-router)
-* [Apollo Router Custom Image and Rhai Script](#apollo-router-custom-image-and-rhai-script)
-* [Apollo Router Custom Plugin](#apollo-router-custom-plugin)
+- [Welcome](#welcome)
+- [Prerequisites](#prerequisites)
+- [Build your first graph](#build-your-first-graph-with-federation-2)
+- [Local development](#local-development-with-federation-2)
+- [Open Telemetry](#tracing-with-open-telemetry)
+- [Composition examples](examples/README.md)
+- [Apollo Router](#apollo-router)
+- [Apollo Router Custom Image and Rhai Script](#apollo-router-custom-image-and-rhai-script)
+- [Apollo Router Custom Plugin](#apollo-router-custom-plugin)
 
 ## Welcome
 
@@ -27,28 +27,28 @@ Designed in collaboration with the GraphQL community, Federation 2 is a
 clean-sheet implementation of the core composition and query-planning engine at
 the heart of Federation, to:
 
-* **streamline common tasks** - like extending a type
-* **simplify advanced workflows** - like migrating a field across subgraphs with no
-downtime
-* **improve the developer experience** - by adding
-deeper static analysis, cleaner error messages, and new composition hints that
-help you catch errors sooner and understand how your schema impacts performance.
+- **streamline common tasks** - like extending a type
+- **simplify advanced workflows** - like migrating a field across subgraphs with no
+  downtime
+- **improve the developer experience** - by adding
+  deeper static analysis, cleaner error messages, and new composition hints that
+  help you catch errors sooner and understand how your schema impacts performance.
 
 Federation 2 adds:
 
-* first-class support for shared interfaces, enums, and other value types
-* cleaner syntax for common tasks -- without the use of special keywords or directives
-* flexible value type merging
-* improved shared ownership for federated types
-* deeper static analysis, better error messages and a new generalized composition model
-* new composition hints let you understand how your schema impacts performance
-* lots more!
+- first-class support for shared interfaces, enums, and other value types
+- cleaner syntax for common tasks -- without the use of special keywords or directives
+- flexible value type merging
+- improved shared ownership for federated types
+- deeper static analysis, better error messages and a new generalized composition model
+- new composition hints let you understand how your schema impacts performance
+- lots more!
 
 Learn more:
 
-* [Blog Post](https://www.apollographql.com/blog/announcement/backend/announcing-federation-2/)
-* [Docs](https://www.apollographql.com/docs/federation/v2)
-* [Community Forum](http://community.apollographql.com/)
+- [Blog Post](https://www.apollographql.com/blog/announcement/backend/announcing-federation-2/)
+- [Docs](https://www.apollographql.com/docs/federation/v2)
+- [Community Forum](http://community.apollographql.com/)
 
 Let's get started!
 
@@ -56,10 +56,10 @@ Let's get started!
 
 You'll need:
 
-* [docker](https://docs.docker.com/get-docker/)
-* [docker-compose](https://docs.docker.com/compose/install/)
-* `rover` [the CLI for managing graphs](https://www.apollographql.com/docs/rover/getting-started)
-* a clone of this repo
+- [docker](https://docs.docker.com/get-docker/)
+- [docker-compose](https://docs.docker.com/compose/install/)
+- `rover` [the CLI for managing graphs](https://www.apollographql.com/docs/rover/getting-started)
+- a clone of this repo
 
 To install `rover`:
 
@@ -79,16 +79,16 @@ For help with `rover` see [installing the Rover CLI](https://www.apollographql.c
 
 ### Sign up for a free Apollo Studio account
 
-* [Create a free Apollo Studio account](https://studio.apollographql.com/welcome)
-* Select `Register a deployed graph` (free forever)
-* Create your user & org
+- [Create a free Apollo Studio account](https://studio.apollographql.com/welcome)
+- Select `Register a deployed graph` (free forever)
+- Create your user & org
 
 ### Create a graph following the prompts
 
 ![Create graph](docs/media/fed2/0-create-graph.png)
 
-* Follow the prompt to add your first graph with the `Deployed` option selected and the `Supergraph` architecture selected.
-* Click Next
+- Follow the prompt to add your first graph with the `Deployed` option selected and the `Supergraph` architecture selected.
+- Click Next
 
 ![Get apollo key](docs/media/fed2/0-apollo-key.png)
 
@@ -156,7 +156,7 @@ make docker-up
 this uses `docker-compose.managed.yml`:
 
 ```yaml
-version: '3'
+version: "3"
 services:
   apollo-gateway:
     container_name: apollo-gateway
@@ -220,17 +220,18 @@ with results like:
         sku: "federation",
         createdBy: {
           email: "support@apollographql.com",
-          totalProductsCreated: 1337
-        }
-      },{
+          totalProductsCreated: 1337,
+        },
+      },
+      {
         id: "apollo-studio",
         sku: "studio",
-        createdBy:{
+        createdBy: {
           email: "support@apollographql.com",
-          totalProductsCreated: 1337
-        }
-      }
-    ]
+          totalProductsCreated: 1337,
+        },
+      },
+    ];
   }
 }
 ```
@@ -342,17 +343,18 @@ with results like:
         sku: "federation",
         createdBy: {
           email: "support@apollographql.com",
-          totalProductsCreated: 1337
-        }
-      },{
+          totalProductsCreated: 1337,
+        },
+      },
+      {
         id: "apollo-studio",
         sku: "studio",
-        createdBy:{
+        createdBy: {
           email: "support@apollographql.com",
-          totalProductsCreated: 1337
-        }
-      }
-    ]
+          totalProductsCreated: 1337,
+        },
+      },
+    ];
   }
 }
 ```
@@ -464,20 +466,20 @@ Once the cluster is up and has queries against it (via `make smoke`), browse to 
 
 Example queries:
 
-* P95 by service: `histogram_quantile(.99, sum(rate(latency_bucket[5m])) by (le, service_name))`
+- P95 by service: `histogram_quantile(.99, sum(rate(latency_bucket[5m])) by (le, service_name))`
 
-* Average latency by service and operation (e.g. router/graphql.validate): `sum by (operation, service_name)(rate(latency_sum{}[1m])) / sum by (operation, service_name)(rate(latency_count{}[1m]))`
+- Average latency by service and operation (e.g. router/graphql.validate): `sum by (operation, service_name)(rate(latency_sum{}[1m])) / sum by (operation, service_name)(rate(latency_count{}[1m]))`
 
-* RPM by service: `sum(rate(calls_total{operation="HTTP POST"}[1m])) by (service_name)`
+- RPM by service: `sum(rate(calls_total{operation="HTTP POST"}[1m])) by (service_name)`
 
 #### Learn More about Open Telemetry
 
-* Docs: [Open Telemetry for Apollo Federation](https://www.apollographql.com/docs/federation/opentelemetry/)
-* Docker compose file: [docker-compose.otel-collector.yml](docker-compose.otel-collector.yml)
-* Helper library: [supergraph-demo-opentelemetry](https://github.com/prasek/supergraph-demo-opentelemetry)
-  * See usage in:
-    * [gateway/gateway.js](gateway/gateway.js)
-    * [subgraphs/products/products.js](subgraphs/products/products.js)
+- Docs: [Open Telemetry for Apollo Federation](https://www.apollographql.com/docs/federation/opentelemetry/)
+- Docker compose file: [docker-compose.otel-collector.yml](docker-compose.otel-collector.yml)
+- Helper library: [supergraph-demo-opentelemetry](https://github.com/prasek/supergraph-demo-opentelemetry)
+  - See usage in:
+    - [gateway/gateway.js](gateway/gateway.js)
+    - [subgraphs/products/products.js](subgraphs/products/products.js)
 
 ## Apollo Router
 
@@ -500,14 +502,14 @@ make demo-router
 which uses this [docker-compose.router-managed.yml](docker-compose.router-managed.yml) file:
 
 ```yaml
-version: '3'
+version: "3"
 services:
   apollo-router:
     container_name: apollo-router
     image: ghcr.io/apollographql/router:v0.9.1
     volumes:
       - ./router.yaml:/dist/config/router.yaml
-    command: [ "-c", "config/router.yaml", "--log", "info" ]
+    command: ["-c", "config/router.yaml", "--log", "info"]
     env_file: # create with make graph-api-env
       - graph-api.env
     ports:
@@ -544,11 +546,11 @@ Similar to [Open Telemetry with the Gateway](#tracing-with-open-telemetry)
 
 If using Docker for Mac to try on your laptop, for the best experience:
 
-* Docker for Mac 4.6.1+
-* Enable these experimental features:
-  * New Virtualization framework
-  * VirtioFS accelerated directory sharing
-* Mac Monterey 12.3+
+- Docker for Mac 4.6.1+
+- Enable these experimental features:
+  - New Virtualization framework
+  - VirtioFS accelerated directory sharing
+- Mac Monterey 12.3+
 
 #### Deploy Graph with Open Telemetry Collector
 
@@ -642,8 +644,8 @@ make docker-down-router
 
 Docs and examples:
 
-* [Router Docs: Native Rust Plugins](https://www.apollographql.com/docs/router/customizations/native)
-* [Router Examples](https://github.com/apollographql/router/tree/main/examples)
+- [Router Docs: Native Rust Plugins](https://www.apollographql.com/docs/router/customizations/native)
+- [Router Examples](https://github.com/apollographql/router/tree/main/examples)
 
 This is based on the [hello-world native Rust plugin example](https://github.com/apollographql/router/tree/main/examples/hello-world).
 
@@ -716,15 +718,15 @@ ENTRYPOINT ["./acme_router"]
 
 ## More on Apollo Router
 
-* [Blog Post](https://www.apollographql.com/blog/announcement/backend/apollo-router-our-graphql-federation-runtime-in-rust/)
-* [Docs](https://www.apollographql.com/docs/router/)
-* [GitHub](https://github.com/apollographql/router)
-* [Discussions](https://github.com/apollographql/router/discussions) -- we'd love to hear what you think!
-* [Community Forum](http://community.apollographql.com/)
+- [Blog Post](https://www.apollographql.com/blog/announcement/backend/apollo-router-our-graphql-federation-runtime-in-rust/)
+- [Docs](https://www.apollographql.com/docs/router/)
+- [GitHub](https://github.com/apollographql/router)
+- [Discussions](https://github.com/apollographql/router/discussions) -- we'd love to hear what you think!
+- [Community Forum](http://community.apollographql.com/)
 
 ## More on Federation 2
 
-* [Blog Post](https://www.apollographql.com/blog/announcement/backend/announcing-apollo-federation-2)
-* [Docs](https://www.apollographql.com/docs/federation/v2)
-* [GitHub](https://github.com/apollographql/federation)
-* [Community Forum](http://community.apollographql.com/) -- we'd love to hear what you think!
+- [Blog Post](https://www.apollographql.com/blog/announcement/backend/announcing-apollo-federation-2)
+- [Docs](https://www.apollographql.com/docs/federation/v2)
+- [GitHub](https://github.com/apollographql/federation)
+- [Community Forum](http://community.apollographql.com/) -- we'd love to hear what you think!

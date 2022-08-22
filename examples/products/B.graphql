@@ -10,7 +10,7 @@ type Review @key(fields: "id") {
 }
 
 extend type Product @key(fields: "upc") {
-#extend type Product {
+  #extend type Product {
   upc: String! @external
   reviews: [Review]
   price: Price @deprecated(reason: "Because!")

@@ -1,30 +1,49 @@
-
 schema
   @link(url: "https://specs.apollo.dev/link/v1.0")
   @link(url: "https://specs.apollo.dev/join/v0.2", for: EXECUTION)
   @link(url: "https://specs.apollo.dev/tag/v0.2")
-  @link(url: "https://specs.apollo.dev/inaccessible/v0.2", for: SECURITY)
-{
+  @link(url: "https://specs.apollo.dev/inaccessible/v0.2", for: SECURITY) {
   query: Query
 }
 
 directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
 
-directive @join__field(graph: join__Graph!, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+directive @join__field(
+  graph: join__Graph!
+  requires: join__FieldSet
+  provides: join__FieldSet
+  type: String
+  external: Boolean
+  override: String
+  usedOverridden: Boolean
+) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
 directive @join__graph(name: String!, url: String!) on ENUM_VALUE
 
-directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+directive @join__implements(
+  graph: join__Graph!
+  interface: String!
+) repeatable on OBJECT | INTERFACE
 
-directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+directive @join__type(
+  graph: join__Graph!
+  key: join__FieldSet
+  extension: Boolean! = false
+  resolvable: Boolean! = true
+) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
 
-directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+directive @link(
+  url: String
+  as: String
+  for: link__Purpose
+  import: [link__Import]
+) repeatable on SCHEMA
 
-directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+directive @tag(
+  name: String!
+) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
 
-type DeliveryEstimates
-  @join__type(graph: INVENTORY)
-{
+type DeliveryEstimates @join__type(graph: INVENTORY) {
   estimatedDelivery: String
   fastestDelivery: String
 }
@@ -32,7 +51,8 @@ type DeliveryEstimates
 scalar join__FieldSet
 
 enum join__Graph {
-  INVENTORY @join__graph(name: "inventory", url: "http://inventory:4000/graphql")
+  INVENTORY
+    @join__graph(name: "inventory", url: "http://inventory:4000/graphql")
   PANDAS @join__graph(name: "pandas", url: "http://pandas:4000/graphql")
   PRODUCTS @join__graph(name: "products", url: "http://products:4000/graphql")
   REVIEWS @join__graph(name: "reviews", url: "http://reviews:4000/graphql")
@@ -53,9 +73,7 @@ enum link__Purpose {
   EXECUTION
 }
 
-type Panda
-  @join__type(graph: PANDAS)
-{
+type Panda @join__type(graph: PANDAS) {
   name: ID!
   favoriteFood: String @tag(name: "nom-nom-nom")
 }
@@ -69,11 +87,13 @@ type Product implements ProductItf & SkuItf
   @join__type(graph: PRODUCTS, key: "id")
   @join__type(graph: PRODUCTS, key: "sku package")
   @join__type(graph: PRODUCTS, key: "sku variation { id }")
-  @join__type(graph: REVIEWS, key: "id")
-{
+  @join__type(graph: REVIEWS, key: "id") {
   id: ID! @tag(name: "hi-from-products")
-  dimensions: ProductDimension @join__field(graph: INVENTORY, external: true) @join__field(graph: PRODUCTS)
-  delivery(zip: String): DeliveryEstimates @join__field(graph: INVENTORY, requires: "dimensions { size weight }")
+  dimensions: ProductDimension
+    @join__field(graph: INVENTORY, external: true)
+    @join__field(graph: PRODUCTS)
+  delivery(zip: String): DeliveryEstimates
+    @join__field(graph: INVENTORY, requires: "dimensions { size weight }")
   sku: String @join__field(graph: PRODUCTS)
   package: String @join__field(graph: PRODUCTS)
   variation: ProductVariation @join__field(graph: PRODUCTS)
@@ -86,8 +106,7 @@ type Product implements ProductItf & SkuItf
 
 type ProductDimension
   @join__type(graph: INVENTORY)
-  @join__type(graph: PRODUCTS)
-{
+  @join__type(graph: PRODUCTS) {
   size: String
   weight: Float
 }
@@ -96,10 +115,11 @@ interface ProductItf implements SkuItf
   @join__implements(graph: PRODUCTS, interface: "SkuItf")
   @join__type(graph: INVENTORY)
   @join__type(graph: PRODUCTS)
-  @join__type(graph: REVIEWS)
-{
+  @join__type(graph: REVIEWS) {
   id: ID!
-  dimensions: ProductDimension @join__field(graph: INVENTORY) @join__field(graph: PRODUCTS)
+  dimensions: ProductDimension
+    @join__field(graph: INVENTORY)
+    @join__field(graph: PRODUCTS)
   delivery(zip: String): DeliveryEstimates @join__field(graph: INVENTORY)
   sku: String @join__field(graph: PRODUCTS)
   package: String @join__field(graph: PRODUCTS)
@@ -111,9 +131,7 @@ interface ProductItf implements SkuItf
   reviews: [Review!]! @join__field(graph: REVIEWS)
 }
 
-type ProductVariation
-  @join__type(graph: PRODUCTS)
-{
+type ProductVariation @join__type(graph: PRODUCTS) {
   id: ID!
 }
 
@@ -122,8 +140,7 @@ type Query
   @join__type(graph: PANDAS)
   @join__type(graph: PRODUCTS)
   @join__type(graph: REVIEWS)
-  @join__type(graph: USERS)
-{
+  @join__type(graph: USERS) {
   allPandas: [Panda] @join__field(graph: PANDAS)
   panda(name: ID!): Panda @join__field(graph: PANDAS)
   allProducts: [ProductItf] @join__field(graph: PRODUCTS)
@@ -131,32 +148,24 @@ type Query
   review(id: Int!): Review @join__field(graph: REVIEWS)
 }
 
-type Review
-  @join__type(graph: REVIEWS)
-{
+type Review @join__type(graph: REVIEWS) {
   id: Int!
   body: String!
 }
 
-enum ShippingClass
-  @join__type(graph: INVENTORY)
-  @join__type(graph: PRODUCTS)
-{
+enum ShippingClass @join__type(graph: INVENTORY) @join__type(graph: PRODUCTS) {
   STANDARD
   EXPRESS
   OVERNIGHT
 }
 
-interface SkuItf
-  @join__type(graph: PRODUCTS)
-{
+interface SkuItf @join__type(graph: PRODUCTS) {
   sku: String
 }
 
 type User
   @join__type(graph: PRODUCTS, key: "email")
-  @join__type(graph: USERS, key: "email")
-{
+  @join__type(graph: USERS, key: "email") {
   email: ID! @tag(name: "test-from-users")
   totalProductsCreated: Int
   name: String @join__field(graph: USERS)

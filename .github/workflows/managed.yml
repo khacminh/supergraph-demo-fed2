@@ -1,9 +1,9 @@
 name: CI Gateway Managed Federation
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    - cron: '30 7 * * *'
+    - cron: "30 7 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -21,16 +21,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      -
-        name: install rover
+      - name: install rover
         run: |
           echo ---------------------------------------------------------------
           echo rover - installing ...
           echo ---------------------------------------------------------------
           curl -sSL https://rover.apollo.dev/nix/latest | sh -s -- --elv2-license accept
           echo "$HOME/.rover/bin" >> ${GITHUB_PATH}
-      -
-        name: update docker-compose
+      - name: update docker-compose
         run: |
           which docker-compose && exit 0 || true
           echo ---------------------------------------------------------------
@@ -46,8 +44,7 @@ jobs:
           echo "$BIN_DIR" >> ${GITHUB_PATH}
           set +x
           echo ---------------------------------------------------------------
-      -
-        name: check tools
+      - name: check tools
         run: |
           echo ---------------------------------------------------------------
           ( set -x; which rover )
